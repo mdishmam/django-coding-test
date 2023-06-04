@@ -43,11 +43,11 @@ const EditProduct = (props) => {
     const container_table = document.createElement("div");
     container_table.innerHTML = table_html;
 
-    const renderHTML = () => {
-        return [{ __html: table_html }].map((item, index) => (
-          <div key={index} dangerouslySetInnerHTML={item} />
-        ));
-      };
+    // const renderHTML = () => {
+    //     return [{ __html: table_html }].map((item, index) => (
+    //       <div key={index} dangerouslySetInnerHTML={item} />
+    //     ));
+    //   };
     // console.log(document.getElementById('product_name').innerText)
     // console.log(document.getElementById('product_sku').innerText)
     // console.log(document.getElementById('table_data').innerText)
@@ -232,7 +232,7 @@ const EditProduct = (props) => {
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        {container_table}
+
                                         {
                                             productVariantPrices.map((productVariantPrice, index) => {
                                                 return (
