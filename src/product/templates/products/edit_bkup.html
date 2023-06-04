@@ -1,0 +1,100 @@
+{% extends 'backend/base.html' %}
+
+{% block title %} Create Product {% endblock %}
+
+{% block content %}
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Edit Product</h1>
+    </div>
+
+
+    <section>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card shadow mb-4">
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="">Product Name</label>
+                            <input type="text" placeholder="Product Name" class="form-control" value="{{ product_name }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="">Product SKU</label>
+                            <input type="text" placeholder="Product Name" class="form-control" value="{{ product_sku }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="">Description</label>
+                            <textarea id="" cols="30" rows="4" class="form-control">{{ product_description }}</textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                        <h6 class="m-0 font-weight-bold text-primary">Media</h6>
+                    </div>
+                    <div class="card-body border">
+                        <section>
+                            <div role="button" tabindex="0">
+                                <input multiple="" type="file" autocomplete="off" tabindex="-1" style="display: none;">
+                                <p>Drag 'n' drop some files here, or click to select files</p>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                        <h6 class="m-0 font-weight-bold text-primary">Variants</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="">Option</label>
+                                    <select class="form-control">
+                                        <option value="1" selected="">Size</option>
+                                        <option value="2">Color</option>
+                                        <option value="3">Style</option>
+                                    </select></div></div>
+                            <div class="col-md-8"><div class="form-group">
+                                <section style="margin-top: 30px;">
+                                    <div class="react-tagsinput">
+                                        <span>
+                                            <input type="text" class="react-tagsinput-input" placeholder="Add a tag" value="">
+                                        </span>
+                                    </div>
+                                </section>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button class="btn btn-primary">Add another option</button>
+                    </div>
+                    <div class="card-header text-uppercase">Preview</div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <td>Variant</td>
+                                    <td>Price</td>
+                                    <td>Stock</td>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button type="button" class="btn btn-lg btn-primary">Save</button>
+        <button type="button" class="btn btn-secondary btn-lg">Cancel</button>
+    </section>
+
+
+
+{% endblock %}

@@ -4,7 +4,7 @@ import 'react-tagsinput/react-tagsinput.css';
 import Dropzone from 'react-dropzone'
 
 
-const CreateProduct = (props) => {
+const EditProduct = (props) => {
 
     const [productVariantPrices, setProductVariantPrices] = useState([])
 
@@ -15,6 +15,42 @@ const CreateProduct = (props) => {
         }
     ])
     console.log(typeof props.variants)
+
+    console.log('here..')
+    //initialize values
+    let product_name_inp = document.getElementById('product_name').innerText
+    let product_sku_inp = document.getElementById('product_sku').innerText
+    let product_description_inp = document.getElementById('product_description').innerText
+    let table_data = document.getElementById('table_data').innerText
+    let rows = table_data.split('||')
+    // console.log(rows)
+    let table_html = ''
+    let tb_row
+    for(let i=0; i<rows.length-1; i++){
+        console.log(rows[i].trim())
+        let row = rows[i].trim().split(',')
+        table_html += '<tr>'
+        // tb_row = document.createElement('tr')
+        for(let j=0; j<row.length; j++){
+            // let tb_dt = document.createElement('td')
+            // tb_dt.textContent = row[j]
+
+            table_html += `<td>${row[j]}</td>`
+        }
+        table_html += '</td>'
+
+    }
+    const container_table = document.createElement("div");
+    container_table.innerHTML = table_html;
+
+    const renderHTML = () => {
+        return [{ __html: table_html }].map((item, index) => (
+          <div key={index} dangerouslySetInnerHTML={item} />
+        ));
+      };
+    // console.log(document.getElementById('product_name').innerText)
+    // console.log(document.getElementById('product_sku').innerText)
+    // console.log(document.getElementById('table_data').innerText)
     // handle click event of the Add button
     const handleAddClick = () => {
         let all_variants = JSON.parse(props.variants.replaceAll("'", '"')).map(el => el.id)
@@ -74,81 +110,10 @@ const CreateProduct = (props) => {
         return ans;
     }
 
-    // function for exporting table to json
-    function exportTableToJson(tableId) {
-        const table = document.getElementById(tableId);
-        const rows = table.getElementsByTagName('tr');
-        const tableData = [];
-
-        for (let i = 1; i < rows.length; i++) {
-            const cells = rows[i].getElementsByTagName('td');
-            const rowData = {};
-
-            const cell = cells[0];
-            const cellValue = cell.innerText; // or cell.textContent, depending on your needs
-
-            rowData[`column1`] = cellValue;
-
-            for (let j = 1; j < cells.length; j++) {
-                const cell = cells[j];
-                let cellValue;
-                try{
-                    cellValue = cell.firstElementChild.value; // or cell.textContent, depending on your needs
-                    console.log(cellValue)
-                }
-                catch (e){
-                    console.log(e)
-                }
-
-
-                rowData[`column${j + 1}`] = cellValue;
-            }
-
-            tableData.push(rowData);
-        }
-        return tableData
-    }
-
     // Save product
     let saveProduct = (event) => {
-    // function saveProduct() {
-        //event.preventDefault();
+        event.preventDefault();
         // TODO : write your code here to save the product
-        const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
-        let product_title = document.getElementById('product_title').value;
-        let product_sku = document.getElementById('product_sku').value;
-        let product_description = document.getElementById('product_description').value;
-        let table_data = exportTableToJson('preview_table');
-
-        console.log('Here..'+csrfToken)
-         const product = {
-             title: product_title,
-             sku: product_sku,
-             description:product_description,
-             table_data:table_data,
-            // Add any other necessary fields
-              };
-         // Send the POST request
-          fetch('http://127.0.0.1:8000/product/create/', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'X-CSRFToken': csrfToken,
-            },
-            body: JSON.stringify(product),
-          })
-            .then(response => {
-                if(response.status == 201){
-                    window.location.href = 'http://127.0.0.1:8000/product/list/';
-                }
-                else{
-                    alert('Could not save.')
-                }
-            })
-            .catch(error => {
-              // Handle any errors that occurred during the request
-              console.error('Error:', error);
-            });
     }
 
 
@@ -161,15 +126,15 @@ const CreateProduct = (props) => {
                             <div className="card-body">
                                 <div className="form-group">
                                     <label htmlFor="">Product Name</label>
-                                    <input id="product_title" type="text" placeholder="Product Name" className="form-control"/>
+                                    <input type="text" placeholder="Product Name" className="form-control" value={product_name_inp}/>
                                 </div>
                                 <div className="form-group">
                                     <label htmlFor="">Product SKU</label>
-                                    <input type="text" id="product_sku" placeholder="Product Name" className="form-control"/>
+                                    <input type="text" placeholder="Product Name" className="form-control" value={product_sku_inp}/>
                                 </div>
                                 <div className="form-group">
                                     <label htmlFor="">Description</label>
-                                    <textarea id="product_description" cols="30" rows="4" className="form-control"></textarea>
+                                    <textarea cols="30" rows="4" className="form-control">{product_description_inp}</textarea>
                                 </div>
                             </div>
                         </div>
@@ -258,7 +223,7 @@ const CreateProduct = (props) => {
                             <div className="card-header text-uppercase">Preview</div>
                             <div className="card-body">
                                 <div className="table-responsive">
-                                    <table className="table" id="preview_table">
+                                    <table className="table">
                                         <thead>
                                         <tr>
                                             <td>Variant</td>
@@ -266,7 +231,8 @@ const CreateProduct = (props) => {
                                             <td>Stock</td>
                                         </tr>
                                         </thead>
-                                        <tbody id="preview_table_body">
+                                        <tbody>
+                                        {container_table}
                                         {
                                             productVariantPrices.map((productVariantPrice, index) => {
                                                 return (
@@ -286,11 +252,11 @@ const CreateProduct = (props) => {
                     </div>
                 </div>
 
-                <button type="button" onClick={saveProduct} className="btn btn-lg btn-warning">Save</button>
+                <button type="button" onClick={saveProduct} className="btn btn-lg btn-primary">Save</button>
                 <button type="button" className="btn btn-secondary btn-lg">Cancel</button>
             </section>
         </div>
     );
 };
 
-export default CreateProduct;
+export default EditProduct;

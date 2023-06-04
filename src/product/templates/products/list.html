@@ -17,7 +17,12 @@
                 </div>
                 <div class="col-md-2">
                     <select name="variant" id="" class="form-control">
-                        <option selected disabled>--Select A Variant--</option>
+                        <option selected value="">--Select A Variant--</option>
+                        {% for variant_type in variants %}
+                            {% for variant in variant_type.varients %}
+                                <option value="{{ variant_type.varient_name }}@@{{ variant }}">{{ variant_type.varient_name }} {{ variant.title }}</option>
+                            {% endfor %}
+                        {% endfor %}
 
                     </select>
                 </div>
@@ -55,58 +60,37 @@
                     </thead>
 
                     <tbody>
+                    {% for product in products %}
+
                     <tr>
-                        <td>1</td>
-                        <td>T-Shirt <br> Created at : 25-Aug-2020</td>
-                        <td>Quality product in low cost</td>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ product.title }} <br> Created at : {{ product.created_at }}</td>
+                        <td>{{ product.description }}</td>
                         <td>
-                            <dl class="row mb-0" style="height: 80px; overflow: hidden" id="variant">
+                            <dl class="row mb-0" style="height: 80px; overflow: hidden" id="variant{{ forloop.counter }}">
+
+                                {% for varient in product.variants  %}
                                 <dt class="col-sm-3 pb-0">
-                                    XL/ Black/ Full
+                                    {{ varient.variant_title }}
                                 </dt>
                                 <dd class="col-sm-9">
                                     <dl class="row mb-0">
-                                        <dd class="col-sm-4 pb-0">Price : 200.0</dd>
-                                        <dd class="col-sm-8 pb-0">InStock : 50.</dd>
+                                        <dd class="col-sm-4 pb-0">Price : {{ varient.price }}</dd>
+                                        <dd class="col-sm-8 pb-0">InStock : {{ varient.stock }}.</dd>
                                     </dl>
                                 </dd>
-                                <dt class="col-sm-3 pb-0">
-                                    XL/ Black/ Half
-                                </dt>
-                                <dd class="col-sm-9">
-                                    <dl class="row mb-0">
-                                        <dd class="col-sm-4 pb-0">Price : 200.0</dd>
-                                        <dd class="col-sm-8 pb-0">InStock : 50.</dd>
-                                    </dl>
-                                </dd>
-                                <dt class="col-sm-3 pb-0">
-                                    L/ Black/ Full
-                                </dt>
-                                <dd class="col-sm-9">
-                                    <dl class="row mb-0">
-                                        <dd class="col-sm-4 pb-0">Price : 200.0</dd>
-                                        <dd class="col-sm-8 pb-0">InStock : 50.</dd>
-                                    </dl>
-                                </dd>
-                                <dt class="col-sm-3 pb-0">
-                                    L/ Black/ Half
-                                </dt>
-                                <dd class="col-sm-9">
-                                    <dl class="row mb-0">
-                                        <dd class="col-sm-4 pb-0">Price : 200.0</dd>
-                                        <dd class="col-sm-8 pb-0">InStock : 50.</dd>
-                                    </dl>
-                                </dd>
+                                {% endfor %}
                             </dl>
-                            <button onclick="$('#variant').toggleClass('h-auto')" class="btn btn-sm btn-link">Show more
+                            <button onclick="$('#variant{{ forloop.counter }}').toggleClass('h-auto')" class="btn btn-sm btn-link">Show more
                             </button>
                         </td>
                         <td>
                             <div class="btn-group btn-group-sm">
-                                <a href="" class="btn btn-success">Edit</a>
+                                <a href="{% url 'product:edit_product' %}?product_id={{ product.id }}" class="btn btn-success">Edit</a>
                             </div>
                         </td>
                     </tr>
+                    {% endfor %}
                     </tbody>
 
                 </table>
@@ -117,8 +101,32 @@
         <div class="card-footer">
             <div class="row justify-content-between">
                 <div class="col-md-6">
-                    <p>Showing 1 to 10 out of 100</p>
+                    <p>Showing 1 to {{ no_of_data_sent }} out of {{ total_products }}</p>
                 </div>
+
+                <div class="pagination">
+                    {% for i in total_pages %}
+                        {% if i == page_no %}
+                            {% if i == 1 %}
+                                <a class="active" href="">{{ i }}</a>
+                            {% else %}
+                                <a class="active" href="{{ i }}">{{ i }}</a>
+                            {% endif %}
+                        {% else %}
+                            {% if i == 1 %}
+                                <a href="">{{ i }}</a>
+                            {% else %}
+                                <a href="{{ i }}">{{ i }}</a>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+{#                  <a class="active" href="2">2</a>#}
+{#                  <a href="3">3</a>#}
+{#                  <a href="4">4</a>#}
+{#                  <a href="5">5</a>#}
+{#                  <a href="#">6</a>#}
+                </div>
+
                 <div class="col-md-2">
 
                 </div>

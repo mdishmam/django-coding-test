@@ -1,0 +1,37 @@
+{% extends 'backend/base.html' %}
+
+{% block title %} Edit Product {% endblock %}
+
+{% block content %}
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Edit Product</h1>
+    </div>
+
+    <div id="product_name" hidden>{{ product_name }}</div>
+    <div id="product_sku" hidden>{{ product_sku }}</div>
+    <div id="product_description" hidden>{{ product_description }}</div>
+
+    <div hidden>
+        <table>
+            <tbody>
+                <div id="table_data">
+                {% for variant in product_price_variants %}
+                    {{ variant.return_combined_variant_slash_sep }},{{ variant.price }},{{ variant.stock }}||
+                {% endfor %}
+                </div>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+    var varients = {{ variants|safe }}
+    console.log(typeof varients)
+    </script>
+
+    <div id="root">
+        <EditProduct id="variants" data-variants="{{ variants|safe }}"></EditProduct>
+    </div>
+
+
+
+{% endblock %}

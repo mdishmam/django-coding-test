@@ -2,7 +2,7 @@ from django.views import generic
 from django.views.generic import ListView, CreateView, UpdateView
 
 from product.forms import VariantForm
-from product.models import Variant
+from product.models import Variant, Product
 
 
 class BaseVariantView(generic.View):
